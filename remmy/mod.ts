@@ -5,6 +5,23 @@ import { validateRequest } from "https://deno.land/x/sift@0.6.0/mod.ts";
 import { verifySignature } from "./verify_signature.ts";
 import { registerCommands } from "./register_commands.ts";
 
+export function getOption<T>(
+  key: string,
+  response: InteractionResponse,
+): T | null {
+  const options = response.data.options;
+  if (!options) return null;
+
+  const option = options.find((val) => val.name === key);
+  if (!option) return null;
+
+  if ("value" in option) {
+    return option.value as unknown as T;
+  } else {
+    return option.options as unknown as T;
+  }
+}
+
 export function remmy(
   commands: Command[],
 ) {

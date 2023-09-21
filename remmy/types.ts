@@ -1,10 +1,24 @@
+export type InteractionData =
+  & {
+    name: string;
+    type: number;
+  }
+  & (
+    | {
+      value: string | number | boolean;
+    }
+    | {
+      options: InteractionData[];
+    }
+  );
+
 export interface InteractionResponse {
-  "app_permissions": string;
+  "app_permissions"?: string;
   "application_id": string;
-  "channel": {
+  "channel"?: {
     "flags": number;
     "guild_id": string;
-    "icon_emoji": { "id": null | string; "name": string };
+    "icon_emoji": { "id"?: string; "name": string };
     "id": string;
     "last_message_id": string;
     "last_pin_timestamp": string;
@@ -18,15 +32,11 @@ export interface InteractionResponse {
     "topic": null;
     "type": number;
   };
-  "channel_id": string;
+  "channel_id"?: string;
   "data": {
     "id": string;
     "name": string;
-    "options"?: {
-      name: string;
-      type: number;
-      value: unknown;
-    }[]; // [{ "name": "name", "type": 3, "value": "kevin" }],
+    "options"?: InteractionData[];
     "type": number;
   };
   "entitlement_sku_ids": [];
@@ -36,13 +46,13 @@ export interface InteractionResponse {
     "id": string;
     "locale": string;
   };
-  "guild_id": string;
-  "guild_locale": string;
+  "guild_id"?: string;
+  "guild_locale"?: string;
   "id": string;
-  "locale": string;
-  "member": {
-    "avatar": null | string;
-    "communication_disabled_until": null | string;
+  "locale"?: string;
+  "member"?: {
+    "avatar"?: string;
+    "communication_disabled_until"?: string;
     "deaf": boolean;
     "flags": number;
     "joined_at": string;
@@ -50,12 +60,12 @@ export interface InteractionResponse {
     "nick": string;
     "pending": boolean;
     "permissions": string;
-    "premium_since": null | string;
+    "premium_since"?: string;
     "roles": string[];
-    "unusual_dm_activity_until": null | string;
+    "unusual_dm_activity_until"?: string;
     "user": {
       "avatar": string;
-      "avatar_decoration_data": null | string;
+      "avatar_decoration_data"?: string;
       "discriminator": string;
       "global_name": string;
       "id": string;

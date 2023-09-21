@@ -1,5 +1,5 @@
 import "dotenv";
-import { CommandType, remmy } from "remmy";
+import { CommandType, getOption, remmy } from "remmy";
 
 remmy([
   {
@@ -14,9 +14,10 @@ remmy([
       },
     ],
     handler: (res) => {
-      const options = res.data.options;
-      if (!options) return "Specifiy options please";
-      return "hello!";
+      const name = getOption<string>("name", res);
+      if (!name) return "Please provide a name!";
+
+      return `Hello, ${name}`;
     },
   },
 ]);
