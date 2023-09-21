@@ -6,14 +6,23 @@ export async function discordReq(
   path: string,
   options: RequestInit | undefined,
 ) {
+  console.log({
+    ...options,
+    headers: {
+      "Authorization": `Bot ${BOT_TOKEN}`,
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+  });
   const req = await fetch(
     `${DISCORD_BASE}${path}`,
     {
+      ...options,
       headers: {
         "Authorization": `Bot ${BOT_TOKEN}`,
         "Content-Type": "application/json",
+        ...options?.headers,
       },
-      ...options,
     },
   );
 
