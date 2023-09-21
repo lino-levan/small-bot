@@ -48,4 +48,22 @@ remmy([
       };
     },
   },
+  {
+    name: "icon",
+    description: "Change the server icon",
+    options: [
+      {
+        type: CommandType.ATTACHMENT,
+        name: "image",
+        description: "The image to change the server icon to",
+        required: true
+      },
+    ],
+    handler: (res) => {
+      const image = getOption("image", res);
+      console.log(image)
+
+      return "got it";
+    },
+  },
 ]);
