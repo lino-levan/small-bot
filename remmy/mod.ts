@@ -1,10 +1,42 @@
 import { validateRequest } from "https://deno.land/x/sift@0.6.0/mod.ts";
 import { verifySignature } from "./verify_signature.ts";
 
-export function remmy() {
+export const enum CommandType {
+  SUB_COMMAND = 1,
+  SUB_COMMAND_GROUP = 2,
+  STRING = 3,
+  INTEGER = 4,
+  BOOLEAN = 5,
+  USER = 6,
+  CHANNEL = 7,
+  ROLE = 8,
+  MENTIONABLE = 9,
+  NUMBER = 10,
+  ATTACHMENT = 11,
+  de,
+}
+
+export interface Command {
+  type: number;
+  name: string;
+  description: string;
+  required?: boolean;
+  options?: Command[];
+}
+
+export function remmy(
+  commands: (Omit<Command, "type"> & { handler: () => string })[],
+) {
+  if (Deno.env.get("REMMY_PUBLISH")) {
+    // We're actually in publish commands mode... don't start bot
+    console.log("[REMMY] Publishing commands to discord");
+
+    return;
+  }
+
   if (!Deno.env.get("DISCORD_PUBLIC_KEY")) {
     throw new Error(
-      "Environment variable 'DISCORD_PUBLIC_KEY' not set. Failing.",
+      "[REMMY] Environment variable 'DISCORD_PUBLIC_KEY' not set. Failing.",
     );
   }
 
@@ -44,7 +76,9 @@ export function remmy() {
 
     // Type 2 in a request is an ApplicationCommand interaction.
     if (type === 2) {
-      const { value } = data.options.find((option) => option.name === "name");
+      const { value } = data.options.find((option: { name: string }) =>
+        option.name === "name"
+      );
       return Response.json({
         type: 4,
         data: {
