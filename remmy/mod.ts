@@ -2,6 +2,12 @@ import { validateRequest } from "https://deno.land/x/sift@0.6.0/mod.ts";
 import { verifySignature } from "./verify_signature.ts";
 
 export function remmy() {
+  if (!Deno.env.get("DISCORD_PUBLIC_KEY")) {
+    throw new Error(
+      "Environment variable 'DISCORD_PUBLIC_KEY' not set. Failing.",
+    );
+  }
+
   return Deno.serve(async (request) => {
     // Validate request is of right type and has correct headers
     const { error } = await validateRequest(request, {
