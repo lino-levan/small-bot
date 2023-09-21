@@ -1,4 +1,4 @@
-import "https://deno.land/std@0.202.0/dotenv/load.ts";
+import "dotenv";
 import { CommandType, remmy } from "remmy";
 
 remmy([
@@ -13,7 +13,9 @@ remmy([
         required: true,
       },
     ],
-    handler: () => {
+    handler: (res) => {
+      const options = res.data.options;
+      if (!options) return "Specifiy options please";
       return "hello!";
     },
   },

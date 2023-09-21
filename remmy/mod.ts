@@ -1,35 +1,36 @@
+import type { Command, InteractionResponse } from "./types.ts";
+export * from "./types.ts";
+
 import { validateRequest } from "https://deno.land/x/sift@0.6.0/mod.ts";
 import { verifySignature } from "./verify_signature.ts";
 
-export const enum CommandType {
-  SUB_COMMAND = 1,
-  SUB_COMMAND_GROUP = 2,
-  STRING = 3,
-  INTEGER = 4,
-  BOOLEAN = 5,
-  USER = 6,
-  CHANNEL = 7,
-  ROLE = 8,
-  MENTIONABLE = 9,
-  NUMBER = 10,
-  ATTACHMENT = 11,
-  de,
-}
+const DISCORD_BASE = "https://discord.com/api/v10";
 
-export interface Command {
-  type: number;
-  name: string;
-  description: string;
-  required?: boolean;
-  options?: Command[];
-}
-
-export function remmy(
-  commands: (Omit<Command, "type"> & { handler: () => string })[],
+export async function remmy(
+  commands: Command[],
 ) {
   if (Deno.env.get("REMMY_PUBLISH")) {
     // We're actually in publish commands mode... don't start bot
     console.log("[REMMY] Publishing commands to discord");
+
+    const BOT_TOKEN = Deno.env.get("DISCORD_BOT_TOKEN")!;
+    const CLIENT_ID = Deno.env.get("DISCORD_CLIENT_ID")!;
+
+    const req = await fetch(
+      `${DISCORD_BASE}/applications/${CLIENT_ID}/commands`,
+      {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bot ${BOT_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          commands.map(({ handler, ...command }) => command),
+        ),
+      },
+    );
+
+    console.log(await req.json());
 
     return;
   }
@@ -63,9 +64,8 @@ export function remmy(
     }
 
     // Extract information
-    const req = JSON.parse(body);
-    const { type = 0, data = { options: [] } } = req;
-    console.log(req);
+    const req: InteractionResponse = JSON.parse(body);
+    const { type = 0 } = req;
 
     // Type 1 in a request implies a Ping interaction.
     if (type === 1) {
@@ -73,18 +73,18 @@ export function remmy(
         type: 1, // Type 1 in a response is a Pong interaction response type.
       });
     }
-
     // Type 2 in a request is an ApplicationCommand interaction.
     if (type === 2) {
-      const { value } = data.options.find((option: { name: string }) =>
-        option.name === "name"
-      );
-      return Response.json({
-        type: 4,
-        data: {
-          content: `Hello, ${value}!`,
-        },
-      });
+      for (const command of commands) {
+        if (command.name === req.data.name) {
+          return Response.json({
+            type: 4,
+            data: {
+              content: command.handler(req),
+            },
+          });
+        }
+      }
     }
 
     // Catch any edgecases

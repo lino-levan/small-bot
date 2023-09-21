@@ -4,7 +4,8 @@
     "publish": "export REMMY_PUBLISH='true' && deno task start"
   },
   "imports": {
-    "remmy": "./remmy/mod.ts"
+    "remmy": "./remmy/mod.ts",
+    "dotenv": "https://deno.land/std@0.202.0/dotenv/load.ts"
   },
   "lock": false
 }
