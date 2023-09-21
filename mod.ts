@@ -70,9 +70,11 @@ remmy([
       const req = await fetch(url);
       const buffer = await req.arrayBuffer();
 
-      await editGuild(res.guild_id, {
-        icon: `data:${content_type};base64,${encode(buffer)}`,
-      });
+      console.log(
+        await editGuild(res.guild_id, {
+          icon: `data:${content_type};base64,${encode(buffer)}`,
+        }),
+      );
 
       return "uhh I think I got it";
     },
