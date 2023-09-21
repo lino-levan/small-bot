@@ -2,4 +2,4 @@ import adjList from "https://raw.githubusercontent.com/dariusk/corpora/master/da
   type: "json",
 };
 
-export const verbs = adjList.adjs;
+export const adjs = adjList.adjs;

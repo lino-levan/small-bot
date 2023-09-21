@@ -2,6 +2,8 @@ import "dotenv";
 import { CommandType, getOption, remmy } from "remmy";
 import { adjs } from "./adjectives.ts";
 
+const randomString = () => (Math.random() + 1).toString(36).substring(7);
+
 remmy([
   {
     name: "cat",
@@ -25,7 +27,9 @@ remmy([
             {
               title,
               image: {
-                url: `https://cataas.com/c/s/${encodeURI(caption)}`,
+                url: `https://cataas.com/c/s/${
+                  encodeURI(caption)
+                }?random=${randomString()}`,
               },
             },
           ],
@@ -37,7 +41,7 @@ remmy([
           {
             title,
             image: {
-              url: `https://cataas.com/c`,
+              url: `https://cataas.com/c?random=${randomString()}`,
             },
           },
         ],
