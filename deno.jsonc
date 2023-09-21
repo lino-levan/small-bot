@@ -1,0 +1,8 @@
+{
+  "tasks": {
+    "start": "deno run -A mod.ts"
+  },
+  "imports": {
+      "remmy": "./remmy/mod.ts"
+  }
+}
