@@ -3,35 +3,14 @@ export * from "./types.ts";
 
 import { validateRequest } from "https://deno.land/x/sift@0.6.0/mod.ts";
 import { verifySignature } from "./verify_signature.ts";
+import { registerCommands } from "./register_commands.ts";
 
-const DISCORD_BASE = "https://discord.com/api/v10";
-
-export async function remmy(
+export function remmy(
   commands: Command[],
 ) {
   if (Deno.env.get("REMMY_PUBLISH")) {
     // We're actually in publish commands mode... don't start bot
-    console.log("[REMMY] Publishing commands to discord");
-
-    const BOT_TOKEN = Deno.env.get("DISCORD_BOT_TOKEN")!;
-    const CLIENT_ID = Deno.env.get("DISCORD_CLIENT_ID")!;
-
-    const req = await fetch(
-      `${DISCORD_BASE}/applications/${CLIENT_ID}/commands`,
-      {
-        method: "PUT",
-        headers: {
-          "Authorization": `Bot ${BOT_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(
-          commands.map(({ handler, ...command }) => command),
-        ),
-      },
-    );
-
-    console.log(await req.json());
-
+    registerCommands(commands);
     return;
   }
 
