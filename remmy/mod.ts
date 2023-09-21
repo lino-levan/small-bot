@@ -15,7 +15,7 @@ export function getOption<T>(
   const option = options.find((val) => val.name === key);
   if (!option) return null;
 
-  console.log(option);
+  console.log(response.data);
 
   if ("value" in option) {
     return option.value as unknown as T;
