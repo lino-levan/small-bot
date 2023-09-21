@@ -37,6 +37,19 @@ export interface InteractionResponse {
     "id": string;
     "name": string;
     "options"?: InteractionData[];
+    resolved?: {
+      attachments?: Record<string, {
+        content_type: string;
+        ephemeral: boolean;
+        filename: string;
+        height: number;
+        id: string;
+        proxy_url: string;
+        size: number;
+        url: string;
+        width: number;
+      }>;
+    };
     "type": number;
   };
   "entitlement_sku_ids": [];

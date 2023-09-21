@@ -60,10 +60,14 @@ remmy([
       },
     ],
     handler: (res) => {
-      const image = getOption("image", res);
-      console.log(image);
+      const image = getOption<string>("image", res);
+      if (!res.data.resolved?.attachments || !image) {
+        return "there was an error";
+      }
 
-      return "got it";
+      const { url } = res.data.resolved.attachments[image];
+
+      return url;
     },
   },
 ]);
