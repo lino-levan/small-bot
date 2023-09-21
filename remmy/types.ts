@@ -102,5 +102,20 @@ export interface Subcommand {
 }
 
 export type Command = {
-  handler: (res: InteractionResponse) => string;
+  handler: (res: InteractionResponse) => string | {
+    tts?: boolean;
+    content?: string;
+    embeds?: unknown[];
+    allowed_mentions?: {
+      parse: ("roles" | "users" | "everyone")[];
+      roles: string[];
+      users: string[];
+      replied_user: boolean;
+    };
+    flags?: number;
+    // TODO: finish
+    attachments?: {
+      url: string;
+    }[];
+  };
 } & Omit<Subcommand, "type">;

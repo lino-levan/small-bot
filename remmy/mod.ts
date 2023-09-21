@@ -73,11 +73,15 @@ export function remmy(
     if (type === 2) {
       for (const command of commands) {
         if (command.name === req.data.name) {
+          const data = command.handler(req);
+          // caption
           return Response.json({
             type: 4,
-            data: {
-              content: command.handler(req),
-            },
+            data: typeof data === "string"
+              ? {
+                content: data,
+              }
+              : data,
           });
         }
       }

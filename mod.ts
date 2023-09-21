@@ -3,21 +3,30 @@ import { CommandType, getOption, remmy } from "remmy";
 
 remmy([
   {
-    name: "hello",
-    description: "Say hello to someone",
+    name: "cat",
+    description: "Send random cat",
     options: [
       {
         type: CommandType.STRING,
-        name: "name",
-        description: "The name of the person to say hello to",
-        required: true,
+        name: "caption",
+        description: "A silly caption for the cat photo",
       },
     ],
     handler: (res) => {
-      const name = getOption<string>("name", res);
-      if (!name) return "Please provide a name!";
+      const caption = getOption<string>("caption", res);
+      if (caption) {
+        return {
+          attachments: [{
+            url: `https://cataas.com/c/s/${encodeURI(caption)}`,
+          }],
+        };
+      }
 
-      return `Hello, ${name}`;
+      return {
+        attachments: [{
+          url: "https://cataas.com/c",
+        }],
+      };
     },
   },
 ]);
