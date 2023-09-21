@@ -16,6 +16,7 @@ export async function verifySignature(
   const signature = request.headers.get("X-Signature-Ed25519")!;
   const timestamp = request.headers.get("X-Signature-Timestamp")!;
   const body = await request.text();
+  console.log(signature, timestamp, body);
   const valid = nacl.sign.detached.verify(
     new TextEncoder().encode(timestamp + body),
     hexToUint8Array(signature),
