@@ -1,5 +1,6 @@
 import "dotenv";
 import { CommandType, getOption, remmy } from "remmy";
+import { adjs } from "./adjectives.ts";
 
 remmy([
   {
@@ -14,11 +15,15 @@ remmy([
     ],
     handler: (res) => {
       const caption = getOption<string>("caption", res);
+      const title = `This is a ${
+        adjs[Math.floor(Math.random() * adjs.length)]
+      } cat`;
+
       if (caption) {
         return {
           embeds: [
             {
-              title: "Some title",
+              title,
               image: {
                 url: `https://cataas.com/c/s/${encodeURI(caption)}`,
               },
@@ -30,7 +35,7 @@ remmy([
       return {
         embeds: [
           {
-            title: "Some title",
+            title,
             image: {
               url: `https://cataas.com/c`,
             },
