@@ -1,3 +1,3 @@
-import { remmy } from "remmy"
+import { remmy } from "remmy";
 
-remmy()
+remmy();
