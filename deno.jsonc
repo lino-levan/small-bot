@@ -5,7 +5,8 @@
   },
   "imports": {
     "remmy": "./remmy/mod.ts",
-    "dotenv": "https://deno.land/std@0.202.0/dotenv/load.ts"
+    "dotenv": "https://deno.land/std@0.202.0/dotenv/load.ts",
+    "base64": "https://deno.land/std@0.202.0/encoding/base64.ts"
   },
   "lock": false
 }

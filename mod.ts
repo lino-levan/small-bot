@@ -1,5 +1,6 @@
 import "dotenv";
-import { CommandType, getOption, remmy } from "remmy";
+import { encode } from "base64";
+import { CommandType, editGuild, getOption, remmy } from "remmy";
 import { adjs } from "./adjectives.ts";
 
 const randomString = () => (Math.random() + 1).toString(36).substring(7);
@@ -59,15 +60,21 @@ remmy([
         required: true,
       },
     ],
-    handler: (res) => {
+    handler: async (res) => {
       const image = getOption<string>("image", res);
-      if (!res.data.resolved?.attachments || !image) {
+      if (!res.data.resolved?.attachments || !image || !res.guild_id) {
         return "there was an error";
       }
 
-      const { url } = res.data.resolved.attachments[image];
+      const { url, content_type } = res.data.resolved.attachments[image];
+      const req = await fetch(url);
+      const buffer = await req.arrayBuffer();
 
-      return url;
+      await editGuild(res.guild_id, {
+        icon: `data:${content_type};base64,${encode(buffer)}`,
+      });
+
+      return "uhh I think I got it";
     },
   },
 ]);

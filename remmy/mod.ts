@@ -5,6 +5,8 @@ import { validateRequest } from "https://deno.land/x/sift@0.6.0/mod.ts";
 import { verifySignature } from "./verify_signature.ts";
 import { registerCommands } from "./register_commands.ts";
 
+export * from "./guild.ts";
+
 export function getOption<T>(
   key: string,
   response: InteractionResponse,
@@ -75,7 +77,7 @@ export function remmy(
     if (type === 2) {
       for (const command of commands) {
         if (command.name === req.data.name) {
-          const data = command.handler(req);
+          const data = await command.handler(req);
           // caption
           return Response.json({
             type: 4,

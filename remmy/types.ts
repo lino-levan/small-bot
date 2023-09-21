@@ -114,21 +114,25 @@ export interface Subcommand {
   options?: Subcommand[];
 }
 
-export type Command = {
-  handler: (res: InteractionResponse) => string | {
-    tts?: boolean;
-    content?: string;
-    embeds?: unknown[];
-    allowed_mentions?: {
-      parse: ("roles" | "users" | "everyone")[];
-      roles: string[];
-      users: string[];
-      replied_user: boolean;
-    };
-    flags?: number;
-    // TODO: finish
-    attachments?: {
-      url: string;
-    }[];
+export interface InteractionReply {
+  tts?: boolean;
+  content?: string;
+  embeds?: unknown[];
+  allowed_mentions?: {
+    parse: ("roles" | "users" | "everyone")[];
+    roles: string[];
+    users: string[];
+    replied_user: boolean;
   };
+  flags?: number;
+  // TODO: finish
+  attachments?: {
+    url: string;
+  }[];
+}
+
+export type Command = {
+  handler: (
+    res: InteractionResponse,
+  ) => string | InteractionReply | Promise<string | InteractionReply>;
 } & Omit<Subcommand, "type">;
