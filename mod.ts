@@ -16,17 +16,26 @@ remmy([
       const caption = getOption<string>("caption", res);
       if (caption) {
         return {
-          attachments: [{
-            type: "image",
-            url: `https://cataas.com/c/s/${encodeURI(caption)}`,
-          }],
+          embeds: [
+            {
+              title: "Some title",
+              image: {
+                url: `https://cataas.com/c/s/${encodeURI(caption)}`,
+              },
+            },
+          ],
         };
       }
 
       return {
-        attachments: [{
-          url: "https://cataas.com/c",
-        }],
+        embeds: [
+          {
+            title: "Some title",
+            image: {
+              url: `https://cataas.com/c`,
+            },
+          },
+        ],
       };
     },
   },
