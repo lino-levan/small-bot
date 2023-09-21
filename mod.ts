@@ -56,12 +56,12 @@ remmy([
         type: CommandType.ATTACHMENT,
         name: "image",
         description: "The image to change the server icon to",
-        required: true
+        required: true,
       },
     ],
     handler: (res) => {
       const image = getOption("image", res);
-      console.log(image)
+      console.log(image);
 
       return "got it";
     },
