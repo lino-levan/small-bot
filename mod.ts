@@ -17,6 +17,7 @@ remmy([
       if (caption) {
         return {
           attachments: [{
+            type: "image",
             url: `https://cataas.com/c/s/${encodeURI(caption)}`,
           }],
         };
