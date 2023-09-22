@@ -1,25 +1,9 @@
 import "dotenv";
 import { encode } from "base64";
 import { CommandType, editGuild, getOption, remmy } from "remmy";
-import { adjs } from "./adjectives.ts";
+import { accepted, adjs, denied, pickRandom } from "./responses.ts";
 
 const randomString = () => (Math.random() + 1).toString(36).substring(7);
-const responses = [
-  "uhh I think I got it",
-  "yup",
-  "mhm",
-  "alright",
-  "I did it.",
-  "Yes sir :salute:",
-  "hehe, don't mind if I do",
-  "lol",
-  "ok",
-  "got it",
-  "mhmmmm",
-  "sure",
-  "okie",
-  "okay",
-];
 
 remmy([
   {
@@ -34,9 +18,7 @@ remmy([
     ],
     handler: (res) => {
       const caption = getOption<string>("caption", res);
-      const title = `This is a ${
-        adjs[Math.floor(Math.random() * adjs.length)]
-      } cat`;
+      const title = `This is a ${pickRandom(adjs)} cat`;
 
       if (caption) {
         return {
@@ -77,6 +59,8 @@ remmy([
       },
     ],
     handler: async (res) => {
+      if (Math.random() < 0.1) return pickRandom(denied);
+
       const image = getOption<string>("image", res);
       if (!res.data.resolved?.attachments || !image || !res.guild_id) {
         return "there was an error";
@@ -90,7 +74,7 @@ remmy([
         icon: `data:${content_type};base64,${encode(buffer)}`,
       });
 
-      return responses[Math.floor(Math.random() * responses.length)];
+      return pickRandom(accepted);
     },
   },
 ]);
