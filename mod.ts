@@ -4,7 +4,7 @@ import { CommandType, editGuild, getOption, remmy } from "remmy";
 import { OpenAI } from "openai";
 import { accepted, adjs, denied, pickRandom } from "./responses.ts";
 
-const openAI = new OpenAI(Deno.env.get("YOUR_API_KEY")!);
+const openAI = new OpenAI(Deno.env.get("OPENAI_KEY")!);
 
 const randomString = () => (Math.random() + 1).toString(36).substring(7);
 
