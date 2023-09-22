@@ -88,6 +88,7 @@ remmy([
         type: CommandType.STRING,
         name: "question",
         description: "A question for Badvaith",
+        required: true,
       },
     ],
     handler: async (res) => {
@@ -102,7 +103,7 @@ remmy([
         ],
       });
 
-      return chatCompletion.choices[0].message.content;
+      return chatCompletion.choices[0].message.content!;
     },
   },
 ]);
