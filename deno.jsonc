@@ -6,7 +6,8 @@
   "imports": {
     "remmy": "./remmy/mod.ts",
     "dotenv": "https://deno.land/std@0.202.0/dotenv/load.ts",
-    "base64": "https://deno.land/std@0.202.0/encoding/base64.ts"
+    "base64": "https://deno.land/std@0.202.0/encoding/base64.ts",
+    "openai": "https://deno.land/x/openai@1.4.2/mod.ts"
   },
   "lock": false
 }

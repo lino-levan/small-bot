@@ -1,7 +1,10 @@
 import "dotenv";
 import { encode } from "base64";
 import { CommandType, editGuild, getOption, remmy } from "remmy";
+import { OpenAI } from "openai";
 import { accepted, adjs, denied, pickRandom } from "./responses.ts";
+
+const openAI = new OpenAI(Deno.env.get("YOUR_API_KEY")!);
 
 const randomString = () => (Math.random() + 1).toString(36).substring(7);
 
@@ -75,6 +78,31 @@ remmy([
       });
 
       return pickRandom(accepted);
+    },
+  },
+  {
+    name: "badvaith",
+    description: "Get advice from Badvaith",
+    options: [
+      {
+        type: CommandType.STRING,
+        name: "question",
+        description: "A question for Badvaith",
+      },
+    ],
+    handler: async (res) => {
+      const question = getOption<string>("question", res);
+      if (!question) return "no.";
+
+      const chatCompletion = await openAI.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [
+          { "role": "system", "content": Deno.env.get("BADVAITH_PROMPT")! },
+          { "role": "user", "content": question },
+        ],
+      });
+
+      return chatCompletion.choices[0].message.content;
     },
   },
 ]);
