@@ -4,6 +4,22 @@ import { CommandType, editGuild, getOption, remmy } from "remmy";
 import { adjs } from "./adjectives.ts";
 
 const randomString = () => (Math.random() + 1).toString(36).substring(7);
+const responses = [
+  "uhh I think I got it",
+  "yup",
+  "mhm",
+  "alright",
+  "I did it.",
+  "Yes sir :salute:",
+  "hehe, don't mind if I do",
+  "lol",
+  "ok",
+  "got it",
+  "mhmmmm",
+  "sure",
+  "okie",
+  "okay",
+];
 
 remmy([
   {
@@ -70,13 +86,11 @@ remmy([
       const req = await fetch(url);
       const buffer = await req.arrayBuffer();
 
-      console.log(
-        await editGuild(res.guild_id, {
-          icon: `data:${content_type};base64,${encode(buffer)}`,
-        }),
-      );
+      await editGuild(res.guild_id, {
+        icon: `data:${content_type};base64,${encode(buffer)}`,
+      });
 
-      return "uhh I think I got it";
+      return responses[Math.floor(Math.random() * responses.length)];
     },
   },
 ]);
